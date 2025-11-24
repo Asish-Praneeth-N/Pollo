@@ -1,65 +1,63 @@
-# Pollo – Real-Time Voting & Polling Application
+# 🗳️ Pollo – Real-Time Voting & Polling Application
 
 **Pollo** is a modern real-time polling platform built with **Next.js**, **Clerk Authentication**, and **Firebase Firestore**.  
-Creators can instantly create polls, share them, and watch votes update live in real time.
+Creators can instantly create polls, share them, and watch votes update live with smooth, real-time visualizations.
 
 ---
 
-## Features
+## ✨ Features
 
-- Create polls with custom options and settings  
-- Vote anonymously or with Clerk login  
-- Real-time updates powered by Firestore listeners  
-- Donut and bar chart visualizations  
-- Shareable poll links  
-- Creator dashboard for managing polls  
-- Export poll results as CSV  
-- Fully responsive UI
-
----
-
-## Tech Stack
-
-- **Next.js 14 (App Router)**
-- **Clerk Authentication**
-- **Firebase Firestore**
-- **Tailwind CSS**
-- **Recharts / Chart.js**
-- **Vercel Deployment**
+- 📝 Create polls with custom options and settings  
+- 👤 Vote anonymously or with Clerk login  
+- ⚡ Real-time updates powered by Firestore listeners  
+- 📊 Donut and bar chart visualizations  
+- 🔗 Shareable poll links  
+- 📂 Creator dashboard for managing polls  
+- 📥 Export poll results as CSV  
+- 📱 Fully responsive UI
 
 ---
 
-## Screens & Workflow
+## 🛠️ Tech Stack
 
-### Landing Page
-- Create Poll button  
-- Join Poll by link  
-- Demo poll preview  
+- ⚛️ **Next.js 14 (App Router)**
+- 🔐 **Clerk Authentication**
+- 🔥 **Firebase Firestore**
+- 🎨 **Tailwind CSS**
+- 📈 **Recharts / Chart.js**
+- ▲ **Vercel Deployment**
 
-### Authentication (Clerk)
+---
+
+## 🖥️ Screens & Workflow
+
+### 🏠 Landing Page
+- ➕ Create Poll button  
+- 🔍 Join Poll by link  
+- 📺 Demo poll with live preview  
+
+### 🔑 Authentication (Clerk)
 - Required for creators  
 - Optional for voters (based on poll settings)
 
-### Create Poll
+### 🛠️ Create Poll
 - Add title, description, and options  
 - Configure voting settings  
-- Live preview  
-- Publish and get share link
+- 👀 Live preview  
+- 🚀 Publish and get share link
 
-### Poll Page
-- Vote (anonymous or logged-in)  
-- Real-time charts and results  
-- Live voter updates  
-- Creator tools (close, share, export)
+### 📄 Poll Page
+- 🗳️ Vote (anonymous or logged-in)  
+- 📊 Real-time charts and results  
+- 👥 Live voter activity  
+- 🛠️ Creator tools (close, share, export)
 
-### Dashboard
-- List of polls created by the user  
+### 📊 Dashboard
+- View all polls created by the user  
 - Manage, duplicate, delete, or export polls
 
-### Results Page
-- Full analytics view  
-- CSV export  
-- Voter details (creator-only)
-
----
+### 📈 Results Page
+- Full analytics overview  
+- 📥 CSV export  
+- 👤 Voter details (creator-only)
 
