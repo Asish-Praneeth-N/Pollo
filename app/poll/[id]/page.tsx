@@ -136,7 +136,11 @@ export default function PollPage() {
     const handleVote = async () => {
         if (selectedOptions.length === 0) return;
         if (poll?.settings.requireLogin && !isSignedIn) {
-            openSignIn();
+            // Redirect back to this poll page after sign-in
+            openSignIn({
+                forceRedirectUrl: window.location.href,
+                fallbackRedirectUrl: window.location.href,
+            });
             return;
         }
 
