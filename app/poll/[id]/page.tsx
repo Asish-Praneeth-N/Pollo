@@ -175,16 +175,22 @@ export default function PollPage() {
                     const optionRef = doc(db, "polls", pollId, "options", optionId);
                     const currentCount = optionReads[index].data()?.count || 0;
 
-                    // Create vote record
-                    transaction.set(voteRef, {
+                    // Create vote record (only include avatarUrl if defined)
+                    const voteData: any = {
                         pollId,
                         optionId,
                         voterId,
                         displayName,
-                        avatarUrl,
                         isAnonymous,
                         createdAt: serverTimestamp(),
-                    });
+                    };
+
+                    // Only add avatarUrl if it exists (Firestore doesn't allow undefined)
+                    if (avatarUrl) {
+                        voteData.avatarUrl = avatarUrl;
+                    }
+
+                    transaction.set(voteRef, voteData);
 
                     // Increment option count
                     transaction.update(optionRef, {
