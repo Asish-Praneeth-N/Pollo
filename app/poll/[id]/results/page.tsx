@@ -157,7 +157,7 @@ export default function ResultsPage() {
                             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Poll
                         </Button>
                         {isSignedIn && (
-                            <Button variant="ghost" className="hover:pl-2 transition-all" onClick={() => router.push('/dashboard')}>
+                            <Button variant="ghost" className="hover:pl-2 transition-all" onClick={() => router.replace('/dashboard')}>
                                 <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
                             </Button>
                         )}

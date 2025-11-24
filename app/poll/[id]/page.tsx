@@ -266,7 +266,7 @@ export default function PollPage() {
                 <Button
                     variant="ghost"
                     className="mb-4 hover:pl-2 transition-all"
-                    onClick={() => router.push('/dashboard')}
+                    onClick={() => router.replace('/dashboard')}
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
                 </Button>
