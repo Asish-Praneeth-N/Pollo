@@ -46,7 +46,7 @@ const COLORS = ['#FFD700', '#FFA500', '#DAA520', '#B8860B', '#8B4513', '#CD853F'
 export default function ResultsPage() {
     const params = useParams();
     const pollId = params.id as string;
-    const { user, isLoaded } = useUser();
+    const { user, isLoaded, isSignedIn } = useUser();
     const router = useRouter();
 
     const [poll, setPoll] = useState<Poll | null>(null);
@@ -63,8 +63,8 @@ export default function ResultsPage() {
 
         const unsubPoll = onSnapshot(pollRef, (doc) => {
             if (doc.exists()) {
-                const data = doc.data() as Poll;
-                setPoll({ id: doc.id, ...data });
+                const data = doc.data() as Omit<Poll, 'id'>;
+                setPoll({ ...data, id: doc.id });
                 if (user && data.creatorId === user.id) {
                     setIsCreator(true);
                 }
@@ -152,9 +152,16 @@ export default function ResultsPage() {
             {/* Header */}
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="space-y-1">
-                    <Button variant="ghost" className="pl-0 hover:pl-2 transition-all" onClick={() => router.push(`/poll/${pollId}`)}>
-                        <ArrowLeft className="w-4 h-4 mr-2" /> Back to Poll
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button variant="ghost" className="pl-0 hover:pl-2 transition-all" onClick={() => router.push(`/poll/${pollId}`)}>
+                            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Poll
+                        </Button>
+                        {isSignedIn && (
+                            <Button variant="ghost" className="hover:pl-2 transition-all" onClick={() => router.push('/dashboard')}>
+                                <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
+                            </Button>
+                        )}
+                    </div>
                     <h1 className="text-3xl font-bold tracking-tight">{poll.title}</h1>
                     <p className="text-muted-foreground">
                         Results & Analytics • {poll.totalVotes} total votes

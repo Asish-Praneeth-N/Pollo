@@ -8,7 +8,7 @@ import { collection, query, where, onSnapshot, orderBy, doc, updateDoc, deleteDo
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, Trash2, Share2, BarChart3, MoreVertical, Power, Copy } from "lucide-react";
+import { Loader2, Plus, Trash2, Share2, BarChart3, MoreVertical, Power, Copy, Download } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -88,6 +88,11 @@ export default function Dashboard() {
         alert("Poll link copied to clipboard!");
     };
 
+    const handleQuickExport = (pollId: string) => {
+        // Quick link to results page where CSV export is available
+        router.push(`/poll/${pollId}/results`);
+    };
+
     if (!isLoaded || !isSignedIn) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -152,8 +157,11 @@ export default function Dashboard() {
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem onClick={() => router.push(`/poll/${poll.id}`)}>
+                                            <DropdownMenuItem onClick={() => router.push(`/poll/${poll.id}/results`)}>
                                                 <BarChart3 className="w-4 h-4 mr-2" /> View Results
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => handleQuickExport(poll.id)}>
+                                                <Download className="w-4 h-4 mr-2" /> Export CSV
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => handleShare(poll.id)}>
                                                 <Share2 className="w-4 h-4 mr-2" /> Share

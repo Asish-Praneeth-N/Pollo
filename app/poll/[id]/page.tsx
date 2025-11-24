@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, Share2, AlertCircle, CheckCircle2, Lock } from "lucide-react";
+import { Loader2, Share2, AlertCircle, CheckCircle2, Lock, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
 
@@ -63,12 +63,17 @@ export default function PollPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState("");
 
-    // Initialize Anonymous ID
+
+    // Initialize Anonymous ID with better uniqueness
     useEffect(() => {
         if (typeof window !== "undefined" && !localStorage.getItem("anonId")) {
-            localStorage.setItem("anonId", `anon_${Math.random().toString(36).substr(2, 9)}`);
+            // Create a more unique ID with timestamp for better tracking
+            const timestamp = Date.now().toString(36);
+            const randomPart = Math.random().toString(36).substring(2, 11);
+            localStorage.setItem("anonId", `anon_${timestamp}_${randomPart}`);
         }
     }, []);
+
 
     // Fetch Poll Data & Real-time Updates
     useEffect(() => {
@@ -256,6 +261,17 @@ export default function PollPage() {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
+            {/* Back to Dashboard Button */}
+            {isSignedIn && (
+                <Button
+                    variant="ghost"
+                    className="mb-4 hover:pl-2 transition-all"
+                    onClick={() => router.push('/dashboard')}
+                >
+                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
+                </Button>
+            )}
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column: Voting Panel */}
                 <div className="lg:col-span-2 space-y-6">
