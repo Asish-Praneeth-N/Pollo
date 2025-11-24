@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Polls collection
+    match /polls/{pollId} {
+      // Anyone can read polls (public voting)
+      allow read: if true;
+      
+      // Only creators can create/update/delete their own polls
+      // Note: Since we're using Clerk (not Firebase Auth), we can't use request.auth
+      // We rely on client-side security and server-side validation
+      // For now, allow writes but validate creatorId in the application
+      allow create: if true;
+      allow update: if true;
+      allow delete: if true;
+      
+      // Options subcollection
+      match /options/{optionId} {
+        allow read: if true;
+        allow write: if true;
+      }
+      
+      // Votes subcollection
+      match /votes/{voteId} {
+        allow read: if true;
+        // Allow anyone to create votes (anonymous voting supported)
+        allow create: if true;
+        // Prevent vote updates/deletes to maintain integrity
+        allow update, delete: if false;
+      }
+    }
+    
+    // Users collection (for syncing Clerk users)
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}
