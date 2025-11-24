@@ -150,22 +150,28 @@ export default function PollPage() {
             const isAnonymous = !user;
 
             await runTransaction(db, async (transaction) => {
-                // Check if poll is still open
+                // ALL READS FIRST - Firestore requirement
+                // 1. Read poll document to check if still open
                 const pollDoc = await transaction.get(doc(db, "polls", pollId));
                 if (!pollDoc.exists() || !pollDoc.data().isOpen) {
                     throw "Poll is closed";
                 }
 
-                // Check for existing vote if multiple votes not allowed (per user/session)
-                // Note: Transactional query for existing vote is tricky. 
-                // We rely on the client-side check + security rules for strict enforcement.
-                // For this demo, we assume the client check is sufficient for UX.
+                // 2. Read all selected option documents to get current counts
+                const optionReads = await Promise.all(
+                    selectedOptions.map(optionId =>
+                        transaction.get(doc(db, "polls", pollId, "options", optionId))
+                    )
+                );
 
-                // Create vote docs and increment counts
-                for (const optionId of selectedOptions) {
+                // ALL WRITES SECOND
+                // 3. Create vote documents and update option counts
+                selectedOptions.forEach((optionId, index) => {
                     const voteRef = doc(collection(db, "polls", pollId, "votes"));
                     const optionRef = doc(db, "polls", pollId, "options", optionId);
+                    const currentCount = optionReads[index].data()?.count || 0;
 
+                    // Create vote record
                     transaction.set(voteRef, {
                         pollId,
                         optionId,
@@ -176,12 +182,13 @@ export default function PollPage() {
                         createdAt: serverTimestamp(),
                     });
 
+                    // Increment option count
                     transaction.update(optionRef, {
-                        count: (await transaction.get(optionRef)).data()?.count + 1 || 1
+                        count: currentCount + 1
                     });
-                }
+                });
 
-                // Update total votes
+                // 4. Update total votes on poll
                 transaction.update(doc(db, "polls", pollId), {
                     totalVotes: (pollDoc.data().totalVotes || 0) + selectedOptions.length
                 });
